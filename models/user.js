@@ -23,9 +23,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isValidPhoneNumber(value) {
-          if (!/^\d{3}-\d{7}$/i.test(value)) {
-            throw new Error("Invalid phone number format.");
+        isPhoneNumberFormat(value) {
+          if (!/^[\d-]+$/.test(value)) {
+            throw new Error(
+              'Invalid phone number format. Must contain only digits or digits with "-"'
+            );
           }
         },
       },

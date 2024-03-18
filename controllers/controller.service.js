@@ -13,14 +13,15 @@ exports.getAllUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const { uFullName, uPhoneNumber, uPicture, uGender, uTitle } = req.body;
-    const resCreate = db.User.create({
+    await db.User.create({
       uFullName,
       uPhoneNumber,
       uPicture,
       uGender,
       uTitle,
     });
-    res.status(200).json(await resCreate);
+    const _data = await repository.findAllUsers();
+    res.status(200).json(_data);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -53,11 +54,20 @@ exports.editUser = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   try {
+    const { id } = req.params;
+    const _data = await repository.findAllUsers();
+    const contactExists = _data.some((contact) => {
+      return contact.uid === Number(id);
+    });
+    if (!contactExists) {
+      return res.status(400).send("Id not found");
+    }
     db.User.destroy({
       where: {
-        uid: req.params.id,
+        uid: id,
       },
     });
+
     res.status(200).json({ message: "Success" });
   } catch (error) {
     res.status(400).json({ message: error.message });
