@@ -1,13 +1,13 @@
-const Icon = ({ divClass, iconClass, btn, handleUser }) => {
+const Icon = ({ divClass, iconClass, btn, handleUser, disabled }) => {
   return (
     <div className={divClass}>
       {btn ? (
-        <button>
+        <button disabled={disabled}>
           {" "}
           <i
             className={iconClass}
             aria-hidden="true"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: disabled ? "none" : "pointer" }}
             onClick={typeof handleUser === "function" ? handleUser : null}
           ></i>
         </button>

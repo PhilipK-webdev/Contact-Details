@@ -11,6 +11,7 @@ const ContactCard = ({ contacts, deleteUser }) => {
             <div className="contact" key={indexContact}>
               <Image url={contact.uPicture} />
               <ContactBody
+                id={contact.uid}
                 name={contact.uFullName}
                 phone={contact.uPhoneNumber}
               />

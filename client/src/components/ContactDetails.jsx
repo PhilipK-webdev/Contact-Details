@@ -1,12 +1,14 @@
 import InputField from "./shared/InputField";
 import ContactCard from "./shared/ContactCard";
 import AddNewUser from "./shared/AddNewUser";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { validPhone } from "../utils/validate";
+import { validPhone } from "../utils/index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserList } from "../features/user/user.js";
 const ContactDetails = () => {
   const dispatch = useDispatch();
+  let navigate = useNavigate();
   const contacts = useSelector((state) => state.users.userList);
   useEffect(() => {
     const fetchData = async () => {
@@ -53,13 +55,12 @@ const ContactDetails = () => {
         }
       }
     } catch (error) {
-      console.error("Error fetching random user:", error);
+      console.error("Error adding new random user:", error);
     }
   };
 
   const handleCreateUser = () => {
-    console.log("Create User");
-    console.log(contacts);
+    navigate("/contacts/new");
   };
   const deleteUser = async (id) => {
     try {
@@ -83,7 +84,11 @@ const ContactDetails = () => {
   };
   return (
     <div className="contact-container">
-      <InputField />
+      <InputField
+        styled={"search-input"}
+        name={"search"}
+        placeholder={"search in contacts..."}
+      />
       <ContactCard contacts={contacts} deleteUser={deleteUser} />
       <AddNewUser
         handleCreateRandomUser={handleCreateRandomUser}

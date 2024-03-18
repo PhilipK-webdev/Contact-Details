@@ -1,14 +1,25 @@
-import React from "react";
 import Icon from "./Icon";
-const InputField = ({ handleChange }) => {
+const InputField = ({
+  styled,
+  label,
+  name,
+  placeholder,
+  handleChange,
+  value,
+  disabled,
+}) => {
   return (
-    <div className="search-input">
+    <div className={styled}>
+      {label && <label>{label}</label>}
       <input
+        disabled={disabled}
         type="text"
-        placeholder="search in contacts..."
+        placeholder={placeholder}
+        name={name}
+        value={value}
         onChange={handleChange}
       />
-      <Icon divClass={"search-icon"} iconClass={"fa fa-search"} />
+      {!label && <Icon divClass={"search-icon"} iconClass={"fa fa-search"} />}
     </div>
   );
 };
