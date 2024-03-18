@@ -9,10 +9,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isOnlyLetters(value) {
-          if (!/^[A-Za-z ]+$/.test(value)) {
-            throw new Error("First name should only contain letters.");
-          }
+        len: {
+          args: [1, 30],
+          msg: "Full name must be between 1 and 30 characters",
+        },
+        is: {
+          args: /^[a-zA-Z\s]+$/,
+          msg: "Full name must contain only English letters and spaces",
         },
       },
     },
@@ -20,7 +23,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: /^\d{3}-\d{3}-\d{4}$/,
+        isValidPhoneNumber(value) {
+          if (!/^\d{3}-\d{7}$/i.test(value)) {
+            throw new Error("Invalid phone number format.");
+          }
+        },
       },
     },
     uPicture: {
@@ -37,13 +44,6 @@ module.exports = (sequelize, DataTypes) => {
     uGender: {
       type: DataTypes.STRING,
       allowNull: true,
-      validate: {
-        isCustomGender: function (value) {
-          if (!/^((?!women|men).)*$/i.test(value)) {
-            throw new Error("Invalid gender");
-          }
-        },
-      },
     },
     uTitle: {
       type: DataTypes.STRING,
