@@ -2,7 +2,7 @@ CREATE TABLE users (
     uid INT AUTO_INCREMENT PRIMARY KEY,
     uFullName VARCHAR(255) NOT NULL,
     uPhoneNumber VARCHAR(255) NOT NULL,
-    uPicture VARCHAR(255),
-    uGender VARCHAR(255) NOT NULL,
+    uPicture VARCHAR(255) NOT NULL,
+    uGender VARCHAR(255),
     uTitle VARCHAR(255) NOT NULL
 );
