@@ -39,7 +39,7 @@ For the Frontend packages/libraries
 
 Database:
 
-A deployment script is provided (seed.sql) containing the SQL query to create the contacts table.
+A deployment script is provided (seed.sql) containing the SQL query to create the users table.
 
 ## Getting Started
 
@@ -47,7 +47,7 @@ A deployment script is provided (seed.sql) containing the SQL query to create th
 - Run `npm i` (install server)
 - cd to client
 - Run `npm i` (install react)
-- Create a .env file in the root directory of the app and save your sql server credentials to a a variables:
+- Create a .env file in the root directory of the app and save your MySQL server credentials to a a variables:
 
   DB_DATABASE,DB_USERNAME,DB_PASSWORD,DB_HOST.
 
