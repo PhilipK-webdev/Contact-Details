@@ -7,6 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { validPhone, validTextField } from "../utils/index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserList } from "../features/user/user.js";
+import ErrorMessage from "./shared/ErrorMessage.jsx";
+
 const EditOrCreateUser = () => {
   const dispatch = useDispatch();
   const contacts = useSelector((state) => state.users.userList);
@@ -20,18 +22,42 @@ const EditOrCreateUser = () => {
   let navigate = useNavigate();
   useEffect(() => {
     refreshImage();
-    if (id) {
-      const filter = contacts.filter((contact) => contact.uid === Number(id));
-      if (filter.length > 0) {
-        setImage(filter[0].uPicture);
-        setName(filter[0].uFullName);
-        setPhoneNumber(filter[0].uPhoneNumber);
-        setTitle(filter[0].uTitle);
-      } else {
-        setDisabledAll(true);
+    let filter;
+    if (!contacts || contacts.length === 0) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch("/api/all");
+          if (response.status === 200) {
+            const data = await response.json();
+            filter = data.filter((contact) => contact.uid === Number(id));
+            if (filter.length > 0) {
+              setImage(filter[0].uPicture);
+              setName(filter[0].uFullName);
+              setPhoneNumber(filter[0].uPhoneNumber);
+              setTitle(filter[0].uTitle);
+            } else {
+              setDisabledAll(true);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      };
+      fetchData();
+    } else {
+      if (id) {
+        filter = contacts.filter((contact) => contact.uid === Number(id));
+        if (filter.length > 0) {
+          setImage(filter[0].uPicture);
+          setName(filter[0].uFullName);
+          setPhoneNumber(filter[0].uPhoneNumber);
+          setTitle(filter[0].uTitle);
+        } else {
+          setDisabledAll(true);
+        }
       }
     }
-  }, [contacts, id]);
+  }, [contacts, dispatch, id]);
 
   const refreshImage = async () => {
     const { GENDER, NUMBER } = generateRandom();
@@ -160,6 +186,7 @@ const EditOrCreateUser = () => {
           </button>
         </div>
       </div>
+      {disabledAll && <ErrorMessage />}
     </div>
   );
 };
