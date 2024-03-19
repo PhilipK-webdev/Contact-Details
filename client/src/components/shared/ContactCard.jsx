@@ -19,6 +19,7 @@ const ContactCard = ({ contacts, deleteUser }) => {
                 divClass={"contact-buttons"}
                 iconClass={"fa fa-phone"}
                 btn={true}
+                phone={contact.uPhoneNumber}
               />
               <Icon
                 handleUser={() => deleteUser(contact.uid)}

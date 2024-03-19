@@ -2,14 +2,16 @@ import InputField from "./shared/InputField";
 import ContactCard from "./shared/ContactCard";
 import AddNewUser from "./shared/AddNewUser";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { validPhone } from "../utils/index.js";
+import { useEffect, useState } from "react";
+import { validPhone, validTextField } from "../utils/index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserList } from "../features/user/user.js";
 const ContactDetails = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const contacts = useSelector((state) => state.users.userList);
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [backUpContacts, setBackUpContacts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -17,6 +19,8 @@ const ContactDetails = () => {
         if (response.status === 200) {
           const data = await response.json();
           dispatch(setUserList(data));
+          setFilteredContacts(data);
+          setBackUpContacts(data);
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -82,12 +86,33 @@ const ContactDetails = () => {
       console.error("Error delete user:", error);
     }
   };
+
+  const handleSearchByNameOrPhone = (e) => {
+    const { value } = e.target;
+    let tempNameArray = [...contacts];
+    if (value) {
+      if (validTextField(value)) {
+        tempNameArray = filteredContacts.filter((contact) => {
+          return contact.uFullName.toLowerCase().includes(value.toLowerCase());
+        });
+      } else if (validPhone(value)) {
+        tempNameArray = filteredContacts.filter((contact) => {
+          return contact.uPhoneNumber.includes(value);
+        });
+      }
+      dispatch(setUserList(tempNameArray));
+    } else {
+      dispatch(setUserList(backUpContacts));
+    }
+  };
+
   return (
     <div className="contact-container">
       <InputField
         styled={"search-input"}
         name={"search"}
         placeholder={"search in contacts..."}
+        handleChange={handleSearchByNameOrPhone}
       />
       <ContactCard contacts={contacts} deleteUser={deleteUser} />
       <AddNewUser

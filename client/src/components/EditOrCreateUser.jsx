@@ -102,16 +102,20 @@ const EditOrCreateUser = () => {
         uTitle: title,
         uGender: gender,
         uPicture: image,
+        ...(id && { id: id }),
       };
       const options = {
-        method: "POST",
+        method: `${id ? "PUT" : "POST"}`,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(object),
       };
-      const responseAddUser = await fetch("/api/create", options);
+      const responseAddUser = await fetch(
+        `/api/${id ? "edit" : "create"}`,
+        options
+      );
       if (responseAddUser.status === 200) {
         const data = await responseAddUser.json();
         dispatch(setUserList(data));

@@ -30,8 +30,12 @@ exports.createUser = async (req, res) => {
 exports.editUser = async (req, res) => {
   try {
     const { id, ...data } = req.body;
+    console.log("ID", id);
     const contacts = await repository.findAllUsers();
-    const contactExists = contacts.some((contact) => contact.uid === id);
+    const contactExists = contacts.some(
+      (contact) => contact.uid === Number(id)
+    );
+    console.log("contacts", contacts);
     if (!contactExists) {
       return res.status(400).json({ message: "invalid user id" });
     }
