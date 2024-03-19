@@ -9,7 +9,13 @@
 
 ## Introduction:Contact Details
 
-Welcome to the Contact Management System! This project provides a simple and efficient solution for managing your contacts, offering a RESTful API built with Node.js and Express, as well as a user-friendly React interface.
+This project is a simple web application for managing contact details. It provides the following features:
+
+Search: Users can search for contacts by name or phone number.
+Add: Users can add a new contact by providing the necessary details.
+Edit: Users can edit existing contacts to update their information.
+Delete: Users can delete contacts from the list.
+The application also includes a feature to add a random user to the contact list, which can be useful to quickly populate the list with sample data.
 
 ## Built with
 
@@ -28,6 +34,8 @@ CRUD Operations:
 For the Frontend packages/libraries
 
 - React
+- react-redux
+- redux toolkit
 
 Database:
 
